@@ -3,6 +3,7 @@ from django.utils.timezone import localtime
 import datetime
 from articlesApp.models import Article
 from reservationsApp.models import Reservation
+from spacesApp.models import Space
 from django.contrib.auth.decorators import login_required
 
 
@@ -49,10 +50,13 @@ def landing_spaces(request, date=None):
 
     delta = (datetime.datetime.strptime(current_date, "%Y-%m-%d").isocalendar()[2])-1
     monday = ((datetime.datetime.strptime(current_date, "%Y-%m-%d") - datetime.timedelta(days=delta)).strftime("%d/%m/%Y"))
+
+    all_spaces = Space.objects.all()
     context = {'reservations' : res_list,
                'current_date' : current_date,
                'controls' : move_controls,
-               'actual_monday' : monday}
+               'actual_monday' : monday,
+               'spaces' : all_spaces}
     return render(request, 'espacios.html', context)
 
 
