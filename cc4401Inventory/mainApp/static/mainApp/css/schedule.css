@@ -678,6 +678,6 @@ Main Components
     display: inline;
 }
 
-.fas {
+.fa-angle-double-left .fa-angle-double-right .fa-angle-left .fa-angle-right {
   font-size: 2em;
 }
