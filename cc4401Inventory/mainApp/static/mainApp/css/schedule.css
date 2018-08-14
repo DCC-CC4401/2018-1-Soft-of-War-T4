@@ -655,7 +655,7 @@ Main Components
     bottom:0;
     position: absolute;
     border-top: 0px;
-    height: 20px;
+    height: 35px;
     width: 100%;
     background-color: #EAEAEA;
 }
@@ -676,4 +676,8 @@ Main Components
     padding: 0px 10px;
     margin: 0;
     display: inline;
+}
+
+.fas {
+  font-size: 2em;
 }
