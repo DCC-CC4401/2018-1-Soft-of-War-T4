@@ -38,10 +38,11 @@
                 <ul>
                     {% for r in reservations.0 %}
 
-                        <li class="single-event reserv_space{{ r.4 }}"" data-start="{{ r.1 }}" data-end="{{ r.2 }}" bgcolor="{{ r.3 }}">
-                            <a href="">
-                                <em class="event-name">{{ r.0 }}</em>
-                            </a>
+                        <li class="single-event reserv_space{{ r.4 }}"" data-start="{{ r.1 }}" data-end="{{ r.2 }}"
+                        bgcolor="{{ r.3 }}">
+                        <a href="">
+                            <em class="event-name">{{ r.0 }}</em>
+                        </a>
                         </li>
 
                     {% endfor %}
@@ -56,10 +57,11 @@
 
                     {% for r in reservations.1 %}
 
-                        <li class="single-event reserv_space{{ r.4 }}"" data-start="{{ r.1 }}" data-end="{{ r.2 }}" bgcolor="{{ r.3 }}">
-                            <a href="">
-                                <em class="event-name">{{ r.0 }}</em>
-                            </a>
+                        <li class="single-event reserv_space{{ r.4 }}"" data-start="{{ r.1 }}" data-end="{{ r.2 }}"
+                        bgcolor="{{ r.3 }}">
+                        <a href="">
+                            <em class="event-name">{{ r.0 }}</em>
+                        </a>
                         </li>
 
                     {% endfor %}
@@ -72,10 +74,11 @@
                 <ul>
                     {% for r in reservations.2 %}
 
-                        <li class="single-event reserv_space{{ r.4 }}"" data-start="{{ r.1 }}" data-end="{{ r.2 }}" bgcolor="{{ r.3 }}">
-                            <a href="">
-                                <em class="event-name">{{ r.0 }}</em>
-                            </a>
+                        <li class="single-event reserv_space{{ r.4 }}"" data-start="{{ r.1 }}" data-end="{{ r.2 }}"
+                        bgcolor="{{ r.3 }}">
+                        <a href="">
+                            <em class="event-name">{{ r.0 }}</em>
+                        </a>
                         </li>
 
                     {% endfor %}
@@ -88,10 +91,11 @@
                 <ul>
                     {% for r in reservations.3 %}
 
-                        <li class="single-event reserv_space{{ r.4 }}"" data-start="{{ r.1 }}" data-end="{{ r.2 }}" bgcolor="{{ r.3 }}">
-                            <a href="">
-                                <em class="event-name">{{ r.0 }}</em>
-                            </a>
+                        <li class="single-event reserv_space{{ r.4 }}"" data-start="{{ r.1 }}" data-end="{{ r.2 }}"
+                        bgcolor="{{ r.3 }}">
+                        <a href="">
+                            <em class="event-name">{{ r.0 }}</em>
+                        </a>
                         </li>
 
                     {% endfor %}
@@ -104,10 +108,11 @@
                 <ul>
                     {% for r in reservations.4 %}
 
-                        <li class="single-event reserv_space{{ r.4 }}"" data-start="{{ r.1 }}" data-end="{{ r.2 }}" bgcolor="{{ r.3 }}">
-                            <a href="">
-                                <em class="event-name">{{ r.0 }}</em>
-                            </a>
+                        <li class="single-event reserv_space{{ r.4 }}"" data-start="{{ r.1 }}" data-end="{{ r.2 }}"
+                        bgcolor="{{ r.3 }}">
+                        <a href="">
+                            <em class="event-name">{{ r.0 }}</em>
+                        </a>
                         </li>
 
                     {% endfor %}
@@ -221,12 +226,20 @@
 
                     <div class="form-group">
                         <label for="reserv_hora_ini">Hora de Inicio:</label>
-                        <input type="time" class="form-control" id="reserv_hora_ini" name="reserv_ini" value="12:00">
+                        <small id="Time help" class="form-text text-muted">La hora seleccionada debe estar entre las
+                            9:00 y las 17:59. Puedes editar este campo como un campo de texto.
+                        </small>
+                        <input type="time" class="form-control" id="reserv_hora_ini" name="reserv_ini" min="09:00"
+                               max="17:59" value="12:00">
                     </div>
 
                     <div class="form-group">
                         <label for="reserv_hora_fin">Hora de Término:</label>
-                        <input type="time" class="form-control" id="reserv_hora_fin" name="reserv_fin" value="14:00">
+                        <small id="Time help" class="form-text text-muted">La hora seleccionada debe estar entre las
+                            9:01 y las 18:00. Puedes editar este campo como un campo de texto.
+                        </small>
+                        <input type="time" class="form-control" id="reserv_hora_fin" name="reserv_fin" min="09:01"
+                               max="18:00" value="14:00">
                     </div>
                     <div class="d-flex justify-content-center">
                         <button type="submit" class="btn btn-primary">Reservar</button>
