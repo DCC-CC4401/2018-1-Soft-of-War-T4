@@ -38,7 +38,7 @@
                 <ul>
                     {% for r in reservations.0 %}
 
-                        <li class="single-event" data-start="{{ r.1 }}" data-end="{{ r.2 }}" bgcolor="{{ r.3 }}">
+                        <li class="single-event reserv_space{{ r.4 }}"" data-start="{{ r.1 }}" data-end="{{ r.2 }}" bgcolor="{{ r.3 }}">
                             <a href="">
                                 <em class="event-name">{{ r.0 }}</em>
                             </a>
@@ -56,7 +56,7 @@
 
                     {% for r in reservations.1 %}
 
-                        <li class="single-event" data-start="{{ r.1 }}" data-end="{{ r.2 }}" bgcolor="{{ r.3 }}">
+                        <li class="single-event reserv_space{{ r.4 }}"" data-start="{{ r.1 }}" data-end="{{ r.2 }}" bgcolor="{{ r.3 }}">
                             <a href="">
                                 <em class="event-name">{{ r.0 }}</em>
                             </a>
@@ -72,7 +72,7 @@
                 <ul>
                     {% for r in reservations.2 %}
 
-                        <li class="single-event" data-start="{{ r.1 }}" data-end="{{ r.2 }}" bgcolor="{{ r.3 }}">
+                        <li class="single-event reserv_space{{ r.4 }}"" data-start="{{ r.1 }}" data-end="{{ r.2 }}" bgcolor="{{ r.3 }}">
                             <a href="">
                                 <em class="event-name">{{ r.0 }}</em>
                             </a>
@@ -88,7 +88,7 @@
                 <ul>
                     {% for r in reservations.3 %}
 
-                        <li class="single-event" data-start="{{ r.1 }}" data-end="{{ r.2 }}" bgcolor="{{ r.3 }}">
+                        <li class="single-event reserv_space{{ r.4 }}"" data-start="{{ r.1 }}" data-end="{{ r.2 }}" bgcolor="{{ r.3 }}">
                             <a href="">
                                 <em class="event-name">{{ r.0 }}</em>
                             </a>
@@ -104,7 +104,7 @@
                 <ul>
                     {% for r in reservations.4 %}
 
-                        <li class="single-event" data-start="{{ r.1 }}" data-end="{{ r.2 }}" bgcolor="{{ r.3 }}">
+                        <li class="single-event reserv_space{{ r.4 }}"" data-start="{{ r.1 }}" data-end="{{ r.2 }}" bgcolor="{{ r.3 }}">
                             <a href="">
                                 <em class="event-name">{{ r.0 }}</em>
                             </a>
@@ -130,12 +130,12 @@
                 <a href="?date={{ controls.2 }}" role="button"><i class="fas fa-angle-right grilla_icons"></i></a>
             </form>
             <form action="" method="get" class="selectform">
-                <a href="?date={{ controls.3 }}" role="button"><i class="fas fa-angle-double-right grilla_icons"></i></a>
+                <a href="?date={{ controls.3 }}" role="button"><i
+                        class="fas fa-angle-double-right grilla_icons"></i></a>
             </form>
         </div>
 
     </div>
-
 
     <div class="event-modal">
         <header class="header">
@@ -157,6 +157,31 @@
 
     <div class="cover-layer"></div>
 </div> <!-- .cd-schedule -->
+
+<div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-9">
+        <div class="row" style="height: 30%"></div>
+        <div class="d-flex justify-content-around">
+            {% for space in spaces %}
+                <button type="button" class="btn btn-outline-primary" id="space{{ space.id }}"
+                        onclick="change_button_type('space{{ space.id }}')">{{ space }}</button>
+            {% endfor %}
+            <script>
+                function change_button_type(id_filtro) {
+                    $('#' + id_filtro).toggleClass("btn-outline-primary").toggleClass("btn-primary");
+                    toogle_opacity('reserv_' + id_filtro)
+                }
+
+                function toogle_opacity(id_filtro) {
+                    $('.' + id_filtro).css("opacity", Math.abs(1 - $('.' + id_filtro).css("opacity")).toString());
+                }
+            </script>
+        </div>
+    </div>
+    <div class="col-sm-1"></div>
+</div>
+
 <script src="{% static 'js/modernizr.js' %}"></script>
 <script src="{% static 'js/jquery-3.0.0.min.js' %}"></script>
 
@@ -175,7 +200,7 @@
             </div>
             <div class="modal-body">
 
-                <form method="POST" action=".">{% csrf_token%}
+                <form method="POST" action=".">{% csrf_token %}
 
                     <div class="form-group">
                         <input type="hidden" id="dia_seleccionado" name="day">
@@ -203,7 +228,9 @@
                         <label for="reserv_hora_fin">Hora de Término:</label>
                         <input type="time" class="form-control" id="reserv_hora_fin" name="reserv_fin" value="14:00">
                     </div>
-                    <div class="d-flex justify-content-center"><button type="submit" class="btn btn-primary">Reservar</button></div>
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary">Reservar</button>
+                    </div>
                 </form>
 
             </div>

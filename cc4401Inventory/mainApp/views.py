@@ -40,6 +40,7 @@ def landing_spaces(request, date=None):
         reserv.append(localtime(r.starting_date_time).strftime("%H:%M"))
         reserv.append(localtime(r.ending_date_time).strftime("%H:%M"))
         reserv.append(colores[r.state])
+        reserv.append(r.space.id)
         res_list[r.starting_date_time.isocalendar()[2]-1].append(reserv)
 
     move_controls = list()
