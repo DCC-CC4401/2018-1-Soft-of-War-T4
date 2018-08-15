@@ -70,6 +70,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
+    def __str__(self):
+        return self.email
+
 
 class Item(models.Model):
     name = models.CharField('Nombre', max_length=40)
@@ -78,6 +81,9 @@ class Item(models.Model):
 
     class Meta:
         abstract = True
+
+    def __str__(self):
+        return self.name
 
 
 class Action(models.Model):
@@ -93,3 +99,6 @@ class Action(models.Model):
 
     class Meta:
         abstract = True
+
+    def __str__(self):
+        return self.user.__str__() + ' - (' + str(self.starting_date_time.day) + ')'
