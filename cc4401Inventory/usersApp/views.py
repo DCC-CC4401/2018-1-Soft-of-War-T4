@@ -4,9 +4,9 @@ from django.contrib.auth import authenticate, login, logout
 from mainApp.models import User
 from django.contrib import messages
 
-from reservationsApp.models import Reservation
+from reservationsApp.models import Space_Reservation
 
-from loansApp.models import Loan
+from loansApp.models import Article_Loan
 
 
 def login_view(request):
@@ -76,8 +76,8 @@ def logout_view(request):
 def user_data(request, user_id):
     try:
         user = User.objects.get(id=user_id)
-        reservations = Reservation.objects.filter(user = user_id).order_by('-starting_date_time')[:10]
-        loans = Loan.objects.filter(user = user_id).order_by('-starting_date_time')[:10]
+        reservations = Space_Reservation.objects.filter(user = user_id).order_by('-starting_date_time')[:10]
+        loans = Article_Loan.objects.filter(user = user_id).order_by('-starting_date_time')[:10]
         context = {
             'user': user,
             'reservations': reservations,

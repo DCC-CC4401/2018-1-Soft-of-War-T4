@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from reservationsApp.models import Reservation
-from loansApp.models import Loan
+from reservationsApp.models import Space_Reservation
+from loansApp.models import Article_Loan
 from articlesApp.models import Article
 from spacesApp.models import Space
 from mainApp.models import User
@@ -49,21 +49,21 @@ def actions_panel(request):
                'P': 'rgba(51,51,204,0.7)',
                 'R': 'rgba(153, 0, 0,0.7)'}
 
-    reservations = Reservation.objects.filter(state='P').order_by('starting_date_time')
-    current_week_reservations = Reservation.objects.filter(starting_date_time__week = current_week)
+    reservations = Space_Reservation.objects.filter(state='P').order_by('starting_date_time')
+    current_week_reservations = Space_Reservation.objects.filter(starting_date_time__week = current_week)
     actual_date = datetime.now(tz=pytz.utc)
     try:
         if request.method == "GET":
             if request.GET["filter"]=='vigentes':
-                loans = Loan.objects.filter(ending_date_time__gt=actual_date).order_by('starting_date_time')
+                loans = Article_Loan.objects.filter(ending_date_time__gt=actual_date).order_by('starting_date_time')
             elif request.GET["filter"]=='caducados':
-                loans = Loan.objects.filter(ending_date_time__lt=actual_date, article__state='P').order_by('starting_date_time')
+                loans = Article_Loan.objects.filter(ending_date_time__lt=actual_date, article__state='P').order_by('starting_date_time')
             elif request.GET["filter"]=='perdidos':
-                loans = Loan.objects.filter(ending_date_time__lt=actual_date, article__state='L').order_by('starting_date_time')
+                loans = Article_Loan.objects.filter(ending_date_time__lt=actual_date, article__state='L').order_by('starting_date_time')
             else:
-                loans = Loan.objects.all().order_by('starting_date_time')
+                loans = Article_Loan.objects.all().order_by('starting_date_time')
     except:
-        loans = Loan.objects.all().order_by('starting_date_time')
+        loans = Article_Loan.objects.all().order_by('starting_date_time')
 
     res_list = []
     for i in range(5):
@@ -109,7 +109,7 @@ def modify_reservations(request):
     if request.method == "POST":
 
         accept = True if (request.POST["accept"] == "1") else False
-        reservations = Reservation.objects.filter(id__in=request.POST["selected"])
+        reservations = Space_Reservation.objects.filter(id__in=request.POST["selected"])
         if accept:
             for reservation in reservations:
                 reservation.state = 'A'
