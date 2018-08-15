@@ -45,7 +45,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     avatar = models.ImageField(upload_to='static/img/avatars/', null=True, blank=True)
     enabled = models.BooleanField('Habilitado', default=True)
     rut = models.CharField('RUT', max_length=12, unique=True, null=True)
-    role = models.IntegerField('Tipo', default=0)
     is_staff = models.BooleanField(_('staff status'), default=False)
 
     objects = UserManager()
