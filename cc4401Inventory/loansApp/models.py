@@ -13,3 +13,6 @@ class Article_Loan(Action):
     )
 
     state = models.CharField('Estado', choices=STATES, max_length=1, default='V')
+
+    def __str__(self):
+        return self.article.__str__() + ' - ' + self.user.__str__() + ' - (' + str(self.starting_date_time) + ')'
