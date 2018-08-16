@@ -32,7 +32,7 @@
     </div>
     <div class="events" id="events">
         <ul>
-            <li class="events-group" data-toggle="modal" data-target="#reservaModal" data-day="0">
+            <li class="events-group">
                 <div class="top-info"><span>Lunes</span></div>
 
                 <ul>
@@ -50,7 +50,7 @@
                 </ul>
             </li>
 
-            <li class="events-group" data-toggle="modal" data-target="#reservaModal" data-day="1">
+            <li class="events-group">
                 <div class="top-info"><span>Martes</span></div>
 
                 <ul>
@@ -68,7 +68,7 @@
                 </ul>
             </li>
 
-            <li class="events-group" data-toggle="modal" data-target="#reservaModal" data-day="2">
+            <li class="events-group">
                 <div class="top-info"><span>Miércoles</span></div>
 
                 <ul>
@@ -85,7 +85,7 @@
                 </ul>
             </li>
 
-            <li class="events-group" data-toggle="modal" data-target="#reservaModal" data-day="3">
+            <li class="events-group">
                 <div class="top-info"><span>Jueves</span></div>
 
                 <ul>
@@ -102,7 +102,7 @@
                 </ul>
             </li>
 
-            <li class="events-group" data-toggle="modal" data-target="#reservaModal" data-day="4">
+            <li class="events-group">
                 <div class="top-info"><span>Viernes</span></div>
 
                 <ul>
@@ -159,24 +159,6 @@
 
     </div>
 
-    <div class="event-modal">
-        <header class="header">
-            <div class="content">
-                <span class="event-date"></span>
-                <h3 class="event-name"></h3>
-            </div>
-
-            <div class="header-bg"></div>
-        </header>
-
-        <div class="body">
-            <div class="event-info"></div>
-            <div class="body-bg"></div>
-        </div>
-
-        <a href="#0" class="close">Close</a>
-    </div>
-
     <div class="cover-layer"></div>
 </div> <!-- .cd-schedule -->
 
@@ -185,63 +167,3 @@
 
 <script src="{% static 'js/main.js' %}"></script> <!-- Resource jQuery -->
 
-<!-- Modal -->
-<div class="modal fade" id="reservaModal" tabindex="-1" role="dialog" aria-labelledby="reservaModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="reservaModalLabel">Reserva un Espacio</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-
-                <form method="POST" action=".">{% csrf_token %}
-
-                    <div class="form-group">
-                        <input type="hidden" id="dia_seleccionado" name="day">
-                    </div>
-
-                    <div class="form-group">
-                        <input type="hidden" id="mail_usuario" name="day">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="espacio_reserv">Selecciona un Espacio:</label>
-                        <select class="form-control" id="espacio_reserv">
-                            {% for space in spaces %}
-                                <option>{{ space.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="reserv_hora_ini">Hora de Inicio:</label>
-                        <small id="Time help" class="form-text text-muted">La hora seleccionada debe estar entre las
-                            9:00 y las 17:59. Puedes editar este campo como un campo de texto.
-                        </small>
-                        <input type="time" class="form-control" id="reserv_hora_ini" name="reserv_ini" min="09:00"
-                               max="17:59" value="12:00">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="reserv_hora_fin">Hora de Término:</label>
-                        <small id="Time help" class="form-text text-muted">La hora seleccionada debe estar entre las
-                            9:01 y las 18:00. Puedes editar este campo como un campo de texto.
-                        </small>
-                        <input type="time" class="form-control" id="reserv_hora_fin" name="reserv_fin" min="09:01"
-                               max="18:00" value="14:00">
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary">Reservar</button>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-<script src="{% static 'mainApp/js/schedule_form.js' %}"></script>

@@ -74,6 +74,7 @@ def actions_panel(request):
         reserv.append(localtime(r.starting_date_time).strftime("%H:%M"))
         reserv.append(localtime(r.ending_date_time).strftime("%H:%M"))
         reserv.append(colores[r.state])
+        reserv.append(r.space.id)
         res_list[r.starting_date_time.isocalendar()[2] - 1].append(reserv)
 
     move_controls = list()
@@ -90,14 +91,15 @@ def actions_panel(request):
     monday = (
         (datetime.strptime(current_date, "%Y-%m-%d") - timedelta(days=delta)).strftime("%d/%m/%Y"))
 
-
+    all_spaces = Space.objects.all()
     context = {
         'reservations_query': reservations,
         'loans': loans,
         'reservations': res_list,
         'current_date': current_date,
         'controls': move_controls,
-        'actual_monday': monday
+        'actual_monday': monday,
+        'spaces' : all_spaces
     }
     return render(request, 'actions_panel.html', context)
 
