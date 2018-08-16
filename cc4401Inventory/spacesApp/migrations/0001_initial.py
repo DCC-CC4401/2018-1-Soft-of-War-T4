@@ -19,6 +19,7 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(blank=True, verbose_name='Descripción')),
                 ('image', models.ImageField(blank=True, upload_to='images/items', verbose_name='Imagen del articulo')),
                 ('state', models.CharField(choices=[('D', 'Disponible'), ('P', 'En préstamo'), ('R', 'En reparación')], max_length=1)),
+                ('capacity', models.PositiveIntegerField(blank=True,verbose_name='Capacidad')),
             ],
             options={
                 'abstract': False,
