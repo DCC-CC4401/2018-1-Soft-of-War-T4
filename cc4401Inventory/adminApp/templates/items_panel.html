@@ -28,7 +28,7 @@
     </div>
     <div class="row">
       <div class="col-md-6 admin-table-container">
-        <h1>Articulos</h1>
+        <h1>Artículos</h1>
         <table class="table table-striped">
           <thead>
           <tr>
@@ -71,7 +71,7 @@
             <td>{{ space.name }}</td>
             <td>{{ space.get_state_display }}</td>
             <td class="center-column">
-              <a class="table-button" href="#"><i class="fas fa-edit"></i></a>
+              <a class="table-button" href="{% url 'space_data_admin' space.id %}"><i class="fas fa-edit"></i></a>
               <a class="table-button" href="#"><i class="fas fa-trash"></i></a>
             </td>
           </tr>
