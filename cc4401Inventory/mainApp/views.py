@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.utils.timezone import localtime
 import datetime
+from mainApp.models import User
 from articlesApp.models import Article
 from reservationsApp.models import Space_Reservation
 from spacesApp.models import Space
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 
 @login_required
@@ -51,6 +53,48 @@ def landing_spaces(request, date=None):
 
     delta = (datetime.datetime.strptime(current_date, "%Y-%m-%d").isocalendar()[2])-1
     monday = ((datetime.datetime.strptime(current_date, "%Y-%m-%d") - datetime.timedelta(days=delta)).strftime("%d/%m/%Y"))
+
+    if request.method == 'POST':
+        try:
+            dia_reserva = int(request.POST['day'])
+
+            if dia_reserva < 0 or dia_reserva > 4:
+                raise ValueError
+
+            espacio_str = request.POST['espacio_reservado']
+            hora_ini_str = request.POST['reserv_ini'].split(":")
+            hora_fin_str = request.POST['reserv_fin'].split(":")
+
+            hora_ini_num = int(hora_ini_str[0])*60 + int(hora_ini_str[1])
+            hora_fin_num = int(hora_fin_str[0])*60 + int(hora_fin_str[1])
+
+            if hora_ini_num >= hora_fin_num:
+                messages.warning(request, 'La hora inicial debe ser después que la hora final.')
+
+            splited_monday = monday.split("/")
+            fecha_ini_str = str(int(splited_monday[0]) + dia_reserva) + "-" + splited_monday[1] + "-" + splited_monday[2] + " " + ":".join(hora_ini_str)
+            fecha_fin_str = str(int(splited_monday[0]) + dia_reserva) + "-" + splited_monday[1] + "-" + splited_monday[2] + " " + ":".join(hora_fin_str)
+
+            fecha_ini = datetime.datetime.strptime(fecha_ini_str, '%d-%m-%Y %H:%M')
+            fecha_fin = datetime.datetime.strptime(fecha_fin_str, '%d-%m-%Y %H:%M')
+
+            if fecha_ini < datetime.datetime.now() + datetime.timedelta(hours=24) and espacio_str == "Quincho":
+                messages.warning(request, 'Reserva rechazada, recuerda que los prestamos del Quincho caducan 24 horas antes de la fecha de inicio del préstamo.')
+            elif fecha_ini < datetime.datetime.now() + datetime.timedelta(hours=1):
+                messages.warning(request, 'No se pueden hacer reservas en un horario menor a una hora a partir de la hora actual.')
+
+            if not request.user.enabled:
+                messages.warning(request, "Debes estar habilitado para hacer reservas para hacer una reserva :/")
+
+            espacio = Space.objects.filter(name=espacio_str).get()
+
+
+            reserva = Space_Reservation(space=espacio, starting_date_time=fecha_ini, ending_date_time=fecha_fin,
+                                user=request.user)
+            reserva.save()
+
+        except:
+            messages.warning(request, 'Formulario Incorrecto')
 
     all_spaces = Space.objects.all()
     context = {'reservations' : res_list,
