@@ -1,0 +1,79 @@
+
+{% extends 'application_layout.html' %}
+
+{% load static %}
+
+{% block title %}
+  Ficha del artículo: {{ article.name }}
+{% endblock %}
+
+
+{% block body %}
+
+
+    <div class = "col-md-5 offset-2">
+      <h3 class="block-title">Detalle de la reserva n° {{ id }} </h3>
+
+      <form action="{% url  'article_request' %}" method="post" class="reservation-form">
+        {% csrf_token%}
+        <input type="hidden" name="article_id" value="{{ article.id }}">
+
+        <div class = "row">
+          <div class="col-md-4">
+            <label>Fecha inicio: </label>
+          </div>
+          <div class="col-md-8">
+           <h6>   {{ reservation.starting_date_time }} </h6>
+          </div>
+        </div>
+
+        <div class = "row">
+          <div class="col-md-4">
+            <label>Fecha Termino: </label>
+          </div>
+          <div class="col-md-8">
+           <h6>   {{ reservation.ending_date_time }} </h6>
+          </div>
+        </div>
+
+        <div class = "row">
+          <div class="col-md-4">
+            <label>Estado: </label>
+          </div>
+          <div class="col-md-8">
+
+
+           {% if reservation.state == "A" %}
+            <span class="badge badge-pill badge-success"><i class="fas fa-chevron-left"></i> Aceptado </span>
+          {% elif reservation.state == "P" %}
+            <span class="badge badge-pill badge-primary"><i class="fas fa-chevron-left"></i> Pendiente </span>
+          {% elif reservation.state == "R" %}
+            <span class="badge badge-pill badge-warning"><i class="fas fa-chevron-left"></i> Rechazado </span>
+          {% endif %}
+
+
+          </div>
+        </div>
+
+
+
+        <div class = "row">
+          <button type="submit" class = "btn btn-primary float-right"> Pedir </button>
+        </div>
+      </form>
+
+        <div class = "row reservation-history-container">
+          <h3 class="block-title"> Historial de reservas</h3>
+            <div class="reservation-history">
+                <ul>
+                    {% for elemento in last_loans %}
+                        <li>{{ elemento }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

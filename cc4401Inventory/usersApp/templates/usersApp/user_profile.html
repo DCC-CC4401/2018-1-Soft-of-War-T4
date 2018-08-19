@@ -93,7 +93,7 @@
                                         <medium class="text-muted">{{ reservation.get_state_display }}</medium>
 
                                                      <h5 class="mb-1" >{{ reservation.article.name }}</h5>
-                                                <form method="post" action="{% url 'delete_reservation' %}">
+                                                <form method="post" action="{% url 'view_reservation' reservation.id %}">
                                                 {% csrf_token %}
                                                      <input  class="button" id="detail-reservation-{{ reservation.id }}" name="reservation"
                                                    type="submit" value="Ver Detalle">
