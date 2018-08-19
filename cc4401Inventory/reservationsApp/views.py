@@ -19,7 +19,7 @@ def delete(request):
         reservation_ids = request.POST.getlist('reservation')
         try:
             for reservation_id in reservation_ids:
-                reservation = Space_Reservation.objects.get(id=reservation_id)
+                reservation = Article_Reservation.objects.get(id=reservation_id)
                 if reservation.state == 'P':
                     reservation.delete()
         except:
