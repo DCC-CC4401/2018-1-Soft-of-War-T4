@@ -39,10 +39,19 @@
           <p class="card-text">{{ space.description }}</p>
         </div>
       </div>
+
+
     </div>
+</div>
+    <div class="row" style="margin-top: 2em;">
+        <div class="col-6 offset-3 schedule-current-week" style="text-align: center;">
+          <div class="alert alert-info">
+            <p>Estás viendo la semana del lunes <b>{{ actual_monday }}</b></p>
+          </div>
+        </div>
+    </div>
+    {% include '_schedule_landing.html' %}
 
 
-
-  </div>
 </div>
 {% endblock %}
