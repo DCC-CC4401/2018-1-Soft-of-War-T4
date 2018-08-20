@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from reservationsApp.models import Space_Reservation
+from reservationsApp.models import Article_Reservation
 from loansApp.models import Article_Loan
 from articlesApp.models import Article
 from spacesApp.models import Space
@@ -53,14 +54,16 @@ def actions_panel(request):
     reservations = Space_Reservation.objects.filter(state='P').order_by('starting_date_time')
     current_week_reservations = Space_Reservation.objects.filter(starting_date_time__week=current_week)
     actual_date = datetime.now(tz=pytz.utc)
+    loans = Article_Loan.objects.all().order_by('starting_date_time')
+
     try:
-        if request.method == "GET":
-            if request.GET["filter"]=='vigentes':
-                loans = Article_Loan.objects.filter(ending_date_time__gt=actual_date).order_by('starting_date_time')
-            elif request.GET["filter"]=='caducados':
-                loans = Article_Loan.objects.filter(ending_date_time__lt=actual_date, article__state='P').order_by('starting_date_time')
-            elif request.GET["filter"]=='perdidos':
-                loans = Article_Loan.objects.filter(ending_date_time__lt=actual_date, state='P').order_by('starting_date_time')
+        if request.method == "POST":
+            if request.POST["filter"]=='vigentes':
+                loans = Article_Loan.objects.filter(ending_date_time__gt=actual_date, state='V').order_by('starting_date_time')
+            elif request.POST["filter"]=='caducados':
+                loans = Article_Loan.objects.filter(ending_date_time__gt=actual_date, state='C').order_by('starting_date_time')
+            elif request.POST["filter"]=='perdidos':
+                loans = Article_Loan.objects.filter(ending_date_time__gt=actual_date, state='P').order_by('starting_date_time')
             else:
                 loans = Article_Loan.objects.all().order_by('starting_date_time')
     except:
@@ -108,7 +111,6 @@ def modify_reservations(request):
     if not (user.is_superuser and user.is_staff):
         return redirect('/')
     if request.method == "POST":
-
         accept = True if (request.POST["accept"] == "1") else False
         try:
 
