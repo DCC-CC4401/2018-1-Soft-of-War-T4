@@ -32,7 +32,7 @@
     </div>
     <div class="events" id="events">
         <ul>
-            <li class="events-group" data-toggle="modal" data-target="#reservaModal" data-day="0">
+            <li class="events-group">
                 <div class="top-info"><span>Lunes</span></div>
 
                 <ul>
@@ -50,7 +50,7 @@
                 </ul>
             </li>
 
-            <li class="events-group" data-toggle="modal" data-target="#reservaModal" data-day="1">
+            <li class="events-group">
                 <div class="top-info"><span>Martes</span></div>
 
                 <ul>
@@ -59,16 +59,16 @@
 
                         <li class="single-event reserv_space{{ r.4 }}"" data-start="{{ r.1 }}" data-end="{{ r.2 }}"
                         bgcolor="{{ r.3 }}">
-                            <a href="">
-                                <em class="event-name">{{ r.0 }}</em>
-                            </a>
+                        <a href="">
+                            <em class="event-name">{{ r.0 }}</em>
+                        </a>
                         </li>
 
                     {% endfor %}
                 </ul>
             </li>
 
-            <li class="events-group" data-toggle="modal" data-target="#reservaModal" data-day="2">
+            <li class="events-group">
                 <div class="top-info"><span>Miércoles</span></div>
 
                 <ul>
@@ -85,7 +85,7 @@
                 </ul>
             </li>
 
-            <li class="events-group" data-toggle="modal" data-target="#reservaModal" data-day="3">
+            <li class="events-group">
                 <div class="top-info"><span>Jueves</span></div>
 
                 <ul>
@@ -102,7 +102,7 @@
                 </ul>
             </li>
 
-            <li class="events-group" data-toggle="modal" data-target="#reservaModal" data-day="4">
+            <li class="events-group">
                 <div class="top-info"><span>Viernes</span></div>
 
                 <ul>
@@ -140,113 +140,37 @@
             </form>
         </div>
 
-        <div>
-            <div style="height: 20px"></div>
-            <div>
-                <h5>Filtros</h5>
-            </div>
-
-            <div class="filters d-flex">
-                {% for space in spaces %}
-                    <button type="button" class="btn btn-outline-primary" id="space{{ space.id }}"
-                            onclick="change_button_type('space{{ space.id }}')" style="margin: 5px;">{{ space }}</button>
-                {% endfor %}
-                <script>
-                    function change_button_type(id_filtro) {
-                        $('#' + id_filtro).toggleClass("btn-outline-primary").toggleClass("btn-primary");
-                        toogle_opacity('reserv_' + id_filtro)
-                    }
-
-                    function toogle_opacity(id_filtro) {
-                        $('.' + id_filtro).css("opacity", Math.abs(1 - $('.' + id_filtro).css("opacity")).toString());
-                    }
-                </script>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="event-modal">
-        <header class="header">
-            <div class="content">
-                <span class="event-date"></span>
-                <h3 class="event-name"></h3>
-            </div>
-
-            <div class="header-bg"></div>
-        </header>
-
-        <div class="body">
-            <div class="event-info"></div>
-            <div class="body-bg"></div>
-        </div>
-
-        <a href="#0" class="close">Close</a>
     </div>
 
     <div class="cover-layer"></div>
 </div> <!-- .cd-schedule -->
 
-<div style="height: 50px"></div>
+<div style="margin: 0 10%">
+    <div style="height: 20px"></div>
+    <div>
+        <h5>Filtros</h5>
+    </div>
+
+    <div class="filters d-flex">
+        {% for space in spaces %}
+            <button type="button" class="btn btn-outline-primary" id="space{{ space.id }}"
+                    onclick="change_button_type('space{{ space.id }}')" style="margin: 5px;">{{ space }}</button>
+        {% endfor %}
+        <script>
+            function change_button_type(id_filtro) {
+                $('#' + id_filtro).toggleClass("btn-outline-primary").toggleClass("btn-primary");
+                toogle_opacity('reserv_' + id_filtro)
+            }
+
+            function toogle_opacity(id_filtro) {
+                $('.' + id_filtro).css("opacity", Math.abs(1 - $('.' + id_filtro).css("opacity")).toString());
+            }
+        </script>
+    </div>
+</div>
 
 <script src="{% static 'js/modernizr.js' %}"></script>
 <script src="{% static 'js/jquery-3.0.0.min.js' %}"></script>
 
 <script src="{% static 'js/main.js' %}"></script> <!-- Resource jQuery -->
 
-<!-- Modal -->
-<div class="modal fade" id="reservaModal" tabindex="-1" role="dialog" aria-labelledby="reservaModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="reservaModalLabel">Reserva un Espacio</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-
-                <form method="POST" action=".">{% csrf_token %}
-
-                    <div class="form-group">
-                        <input type="hidden" id="dia_seleccionado" name="day">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="espacio_reserv">Selecciona un Espacio:</label>
-                        <select class="form-control" id="espacio_reserv" name="espacio_reservado">
-                            {% for space in spaces %}
-                                <option>{{ space.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="reserv_hora_ini">Hora de Inicio:</label>
-                        <small id="Time help" class="form-text text-muted">La hora seleccionada debe estar entre las
-                            9:00 y las 17:59. Puedes editar este campo como un campo de texto.
-                        </small>
-                        <input type="time" class="form-control" id="reserv_hora_ini" name="reserv_ini" min="09:00"
-                               max="17:59" value="12:00">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="reserv_hora_fin">Hora de Término:</label>
-                        <small id="Time help" class="form-text text-muted">La hora seleccionada debe estar entre las
-                            9:01 y las 18:00. Puedes editar este campo como un campo de texto.
-                        </small>
-                        <input type="time" class="form-control" id="reserv_hora_fin" name="reserv_fin" min="09:01"
-                               max="18:00" value="14:00">
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary">Reservar</button>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-<script src="{% static 'mainApp/js/schedule_form.js' %}"></script>
