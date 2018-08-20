@@ -1,14 +1,17 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from articlesApp.models import Article
 from loansApp.models import Article_Loan
 from reservationsApp.models import Article_Reservation
 from django.db import models
 from datetime import datetime, timedelta
-
+from django.http import HttpResponseRedirect
+from .import forms
+import json
 import random, os
 import pytz
 from django.contrib import messages
+from django.views.generic.base import View
 
 
 
@@ -135,3 +138,23 @@ def article_edit_description(request, article_id):
         a.save()
 
     return redirect('/article/' + str(article_id) + '/edit')
+
+
+@login_required
+def article_create(request):
+    if request.method == 'POST':
+        form = forms.CreateArticle(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/admin/items-panel/')
+    else:
+        form = forms.CreateArticle()
+    return render(request, 'article_create.html', {'form': form})
+
+
+def article_delete(request):
+        try:
+            Article.objects.filter(id=request.POST['article_id']).delete()
+        except ValueError:
+            print(ValueError)
+        return HttpResponseRedirect('/admin/items-panel/')

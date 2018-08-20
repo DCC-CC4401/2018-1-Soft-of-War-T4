@@ -1,0 +1,27 @@
+
+{% extends 'application_layout.html' %}
+
+{% load static %}
+
+{% block title %}
+  Crear artículo
+{% endblock %}
+
+
+{% block body %}
+<div class="create-article">
+<h2>Crear nuevo artículo</h2>
+<form class="site-form" action="{% url 'create' %}" method="post">
+    {% csrf_token %}
+    {% load bootstrap %}
+
+    {{ form|bootstrap }}
+
+    <input type="submit" value="Crear">
+</form>
+
+</div>
+
+
+
+{% endblock %}

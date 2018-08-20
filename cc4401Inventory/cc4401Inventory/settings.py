@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'adminApp.apps.AdminappConfig',
     'usersApp.apps.UsersappConfig',
     'bootstrap4',
+    'bootstrapform',
 ]
 
 MIDDLEWARE = [

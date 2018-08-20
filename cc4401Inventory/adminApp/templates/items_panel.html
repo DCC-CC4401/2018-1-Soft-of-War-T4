@@ -18,7 +18,7 @@
                 <i class="fas fa-search"></i>
               </span>
             </div>
-            <input class="form-control" type="text" placeholder="Ingrese su busqueda">
+            <input class="form-control" type="text" placeholder="Ingrese su búsqueda">
             <div class="input-group-append">
               <button class="search-button btn btn-outline-secondary" type="submit">Buscar</button>
             </div>
@@ -28,17 +28,20 @@
     </div>
     <div class="row">
       <div class="col-md-6 admin-table-container">
-        <h1>Articulos</h1>
+        <h1>Artículos</h1>
         <table class="table table-striped">
           <thead>
           <tr>
             <th scope="col">ID</th>
-            <th scope="col">Nombre del Articulo</th>
+            <th scope="col">Nombre del Artículo</th>
             <th scope="col">Estado</th>
             <th scope="col"></th>
           </tr>
           </thead>
           <tbody>
+          <a  href="{% url 'create' %}" class="table-button add-button">
+              <i class="fas fa-plus-circle"></i>
+          </a>
           {% for article in articles %}
           <tr>
             <td>{{ article.id }}</td>
@@ -46,7 +49,12 @@
             <td>{{ article.state }}</td>
             <td class="center-column">
               <a class="table-button" href="{% url 'article_data_admin' article.id %}"><i class="fas fa-edit"></i></a>
-              <a class="table-button" href="#"><i class="fas fa-trash"></i></a>
+               <form action="{% url 'delete'   %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name='article_id' value={{ article.id }}>
+                   <button type="submit"><i class="fas fa-trash"></i></button>
+                </form>
+
             </td>
           </tr>
           {% endfor %}
@@ -71,7 +79,7 @@
             <td>{{ space.name }}</td>
             <td>{{ space.get_state_display }}</td>
             <td class="center-column">
-              <a class="table-button" href="#"><i class="fas fa-edit"></i></a>
+              <a class="table-button" href="{% url 'space_data_admin' space.id %}"><i class="fas fa-edit"></i></a>
               <a class="table-button" href="#"><i class="fas fa-trash"></i></a>
             </td>
           </tr>
