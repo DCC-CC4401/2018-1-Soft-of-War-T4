@@ -82,7 +82,6 @@ def logout_view(request):
 
 @login_required
 def user_data(request, user_id):
-    try:
         user = User.objects.get(id=user_id)
         # TODO agregar reservas de articulo
         reservations = Article_Reservation.objects.filter(user = user_id).order_by('-starting_date_time')[:10]
@@ -93,5 +92,26 @@ def user_data(request, user_id):
             'loans': loans
         }
         return render(request, 'usersApp/user_profile.html', context)
-    except Exception:
-        return redirect('/')
+
+@login_required
+def loan_data(request, loan_id):
+    #try:
+        loan = Article_Loan.objects.get(id=loan_id)
+        context = {
+            'loan': loan,
+        }
+
+        return render(request, 'usersApp/loans-data.html', context)
+    #except Exception as e:
+        #print(e)
+        #return redirect('/')
+
+
+@login_required
+def lost_request(request, loan_id):
+    if request.method == 'POST':
+        loan = Article_Loan.objects.get(id=loan_id)
+        loan.state = 'P'
+        loan.save()
+    return redirect('user_data', user_id=request.user.id)
+

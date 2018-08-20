@@ -1,5 +1,6 @@
 from mainApp.models import Action
 from articlesApp.models import Article
+from spacesApp.models import Space
 from django.db import models
 
 
@@ -9,7 +10,8 @@ class Article_Loan(Action):
     STATES = (
         ('V', 'Vigente'),
         ('C', 'Caducado'),
-        ('P', 'Perdido')
+        ('P', 'Perdido'),
+        ('R', 'Recibido'),
     )
 
     state = models.CharField('Estado', choices=STATES, max_length=1, default='V')

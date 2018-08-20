@@ -8,6 +8,7 @@ from mainApp.models import User
 from datetime import datetime, timedelta, date
 import pytz
 from django.utils.timezone import localtime
+from django.contrib import messages
 
 @login_required
 def user_panel(request):
@@ -50,7 +51,7 @@ def actions_panel(request):
                 'R': 'rgba(153, 0, 0,0.7)'}
 
     reservations = Space_Reservation.objects.filter(state='P').order_by('starting_date_time')
-    current_week_reservations = Space_Reservation.objects.filter(starting_date_time__week = current_week)
+    current_week_reservations = Space_Reservation.objects.filter(starting_date_time__week=current_week)
     actual_date = datetime.now(tz=pytz.utc)
     try:
         if request.method == "GET":
@@ -59,7 +60,7 @@ def actions_panel(request):
             elif request.GET["filter"]=='caducados':
                 loans = Article_Loan.objects.filter(ending_date_time__lt=actual_date, article__state='P').order_by('starting_date_time')
             elif request.GET["filter"]=='perdidos':
-                loans = Article_Loan.objects.filter(ending_date_time__lt=actual_date, article__state='L').order_by('starting_date_time')
+                loans = Article_Loan.objects.filter(ending_date_time__lt=actual_date, state='P').order_by('starting_date_time')
             else:
                 loans = Article_Loan.objects.all().order_by('starting_date_time')
     except:
@@ -109,14 +110,48 @@ def modify_reservations(request):
     if request.method == "POST":
 
         accept = True if (request.POST["accept"] == "1") else False
-        reservations = Space_Reservation.objects.filter(id__in=request.POST["selected"])
-        if accept:
-            for reservation in reservations:
-                reservation.state = 'A'
-                reservation.save()
-        else:
-            for reservation in reservations:
-                reservation.state = 'R'
-                reservation.save()
+        try:
 
-    return redirect('/admin/actions-panel')
+            reservations = Space_Reservation.objects.filter(id__in=request.POST["selected"])
+            if accept:
+                for reservation in reservations:
+                    reservation.state = 'A'
+                    reservation.save()
+                    accept = Article_Loan(user=reservation.user,
+                                      space=reservation.article,
+                                      starting_date_time=reservation.starting_date_time,
+                                        ending_date_time=reservation.ending_date_time)
+                    accept.save()
+            else:
+                for reservation in reservations:
+                    reservation.state = 'R'
+                    reservation.save()
+            return redirect('/admin/actions-panel')
+        except:
+            messages.warning(request, 'No se seleccionaron Reservas')
+            return redirect('/admin/actions-panel')
+
+
+def modify_loans(request):
+    user = request.user
+    if not (user.is_superuser and user.is_staff):
+        return redirect('/')
+    if request.method == "POST":
+
+        accept = True if (request.POST["recibir"] == "1") else False
+        try:
+            loans = Article_Loan.objects.filter(id__in=request.POST["selected"])
+            if accept:
+                for loan in loans:
+                    loan.state = 'R'
+                    loan.save()
+            else:
+                for loan in loans:
+                    loan.state = 'P'
+                    loan.save()
+
+            return redirect('/admin/actions-panel')
+
+        except:
+            messages.warning(request, 'No se seleccionaron Prestamos')
+            return redirect('/admin/actions-panel')
