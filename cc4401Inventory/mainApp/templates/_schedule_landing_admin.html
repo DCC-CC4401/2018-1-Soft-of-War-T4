@@ -140,27 +140,34 @@
             </form>
         </div>
 
-        <div class="filters d-flex justify-content-around">
-            {% for space in spaces %}
-                <button type="button" class="btn btn-outline-primary" id="space{{ space.id }}"
-                        onclick="change_button_type('space{{ space.id }}')">{{ space }}</button>
-            {% endfor %}
-            <script>
-                function change_button_type(id_filtro) {
-                    $('#' + id_filtro).toggleClass("btn-outline-primary").toggleClass("btn-primary");
-                    toogle_opacity('reserv_' + id_filtro)
-                }
-
-                function toogle_opacity(id_filtro) {
-                    $('.' + id_filtro).css("opacity", Math.abs(1 - $('.' + id_filtro).css("opacity")).toString());
-                }
-            </script>
-        </div>
-
     </div>
 
     <div class="cover-layer"></div>
 </div> <!-- .cd-schedule -->
+
+<div style="margin: 0 10%">
+    <div style="height: 20px"></div>
+    <div>
+        <h5>Filtros</h5>
+    </div>
+
+    <div class="filters d-flex">
+        {% for space in spaces %}
+            <button type="button" class="btn btn-outline-primary" id="space{{ space.id }}"
+                    onclick="change_button_type('space{{ space.id }}')" style="margin: 5px;">{{ space }}</button>
+        {% endfor %}
+        <script>
+            function change_button_type(id_filtro) {
+                $('#' + id_filtro).toggleClass("btn-outline-primary").toggleClass("btn-primary");
+                toogle_opacity('reserv_' + id_filtro)
+            }
+
+            function toogle_opacity(id_filtro) {
+                $('.' + id_filtro).css("opacity", Math.abs(1 - $('.' + id_filtro).css("opacity")).toString());
+            }
+        </script>
+    </div>
+</div>
 
 <script src="{% static 'js/modernizr.js' %}"></script>
 <script src="{% static 'js/jquery-3.0.0.min.js' %}"></script>
