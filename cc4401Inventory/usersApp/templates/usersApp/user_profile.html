@@ -173,6 +173,7 @@
 
                                             <!-- Tener seleccionado la primera casilla por default-->
 
+
                                             <a class="nav-link {% if forloop.counter0 == 0 %} active {% endif %}
                                          d-flex justify-content-between align-items-center"
                                                id="v-pills-{{ loan.pk }}-tab" data-toggle="pill"
@@ -204,6 +205,12 @@
                                                             </medium>
                                                         </div>
                                                         <medium class="text-muted">{{ loan.get_state_display }}</medium>
+                                                      <form method="post" action="{% url 'loan_data' loan.id %}">
+                                                {% csrf_token %}
+                                                     <input  class="button" id="detail-loan-{{ loan.pk }}" name="loan"
+                                                   type="submit" value="Ver Detalle Prestamo">
+                                                </form>
+
 
 
                                                         <!-- Imagen de los préstamos-->

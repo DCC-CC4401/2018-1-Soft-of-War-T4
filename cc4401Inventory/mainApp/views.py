@@ -9,8 +9,8 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def landing_articles(request):
-    context = {}
-    return render(request, 'articulos.html', context)
+        context = {}
+        return render(request, 'articulos.html', context)
 
 
 @login_required

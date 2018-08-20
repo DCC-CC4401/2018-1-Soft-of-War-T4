@@ -1,0 +1,51 @@
+
+{% extends 'application_layout.html' %}
+
+{% load static %}
+
+{% block title %}
+  Ficha del préstamo: {{ loan.id }}
+{% endblock %}
+
+
+{% block body %}
+
+  <div class="row">
+    <div class="col-md-4 offset-1">
+
+      <div class="row">
+        <h1 class="loan-name">
+          {{ loan.name }}
+        {% if article.state == "V" %}
+            <span class="badge badge-pill badge-success"><i class="fas fa-chevron-left"></i> {{  article.get_state_display }}</span>
+          {% elif article.state == "C" %}
+            <span class="badge badge-pill badge-danger"><i class="fas fa-chevron-left"></i> {{  article.get_state_display }}</span>
+          {% elif article.state == "P" %}
+            <span class="badge badge-pill badge-danger"><i class="fas fa-chevron-left"></i> {{  article.get_state_display }}</span>
+          {% endif %}
+         </h1>
+      </div>
+
+
+      <div class="card">
+        <div class="card-header article-description-title">Usuario del Prestamo:</div>
+        <div class="card-body">
+          <p class="card-text">{{ loan.user }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class = "col-md-5 offset-2">
+      <h3 class="block-title"> ¿Perdiste el articulo? </h3>
+      <form action="{% url  'lost_request' %}" method="post" class="lost-form">
+        {% csrf_token%}
+        <input type="hidden" name="loan_id" value="{{ loan.id }}">
+        <div class = "row">
+          <button type="submit" class = "btn btn-primary float-right"> Marcar como Perdido </button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

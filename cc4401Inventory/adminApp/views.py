@@ -9,6 +9,7 @@ from mainApp.models import User
 from datetime import datetime, timedelta, date
 import pytz
 from django.utils.timezone import localtime
+from django.contrib import messages
 
 @login_required
 def user_panel(request):
@@ -50,8 +51,8 @@ def actions_panel(request):
                'P': 'rgba(51,51,204,0.7)',
                 'R': 'rgba(153, 0, 0,0.7)'}
 
-    reservations = Article_Reservation.objects.filter(state='P').order_by('starting_date_time')
-    current_week_reservations = Space_Reservation.objects.filter(starting_date_time__week = current_week)
+    reservations = Space_Reservation.objects.filter(state='P').order_by('starting_date_time')
+    current_week_reservations = Space_Reservation.objects.filter(starting_date_time__week=current_week)
     actual_date = datetime.now(tz=pytz.utc)
     loans = Article_Loan.objects.all().order_by('starting_date_time')
 
@@ -111,18 +112,48 @@ def modify_reservations(request):
         return redirect('/')
     if request.method == "POST":
         accept = True if (request.POST["accept"] == "1") else False
+        try:
 
-        if request.POST.get('selected'):
-
-            reservations = Article_Reservation.objects.filter(id__in=request.POST.get("selected", False))
-
+            reservations = Space_Reservation.objects.filter(id__in=request.POST["selected"])
             if accept:
                 for reservation in reservations:
                     reservation.state = 'A'
                     reservation.save()
+                    accept = Article_Loan(user=reservation.user,
+                                      space=reservation.article,
+                                      starting_date_time=reservation.starting_date_time,
+                                        ending_date_time=reservation.ending_date_time)
+                    accept.save()
             else:
                 for reservation in reservations:
                     reservation.state = 'R'
                     reservation.save()
+            return redirect('/admin/actions-panel')
+        except:
+            messages.warning(request, 'No se seleccionaron Reservas')
+            return redirect('/admin/actions-panel')
 
-    return redirect('/admin/actions-panel')
+
+def modify_loans(request):
+    user = request.user
+    if not (user.is_superuser and user.is_staff):
+        return redirect('/')
+    if request.method == "POST":
+
+        accept = True if (request.POST["recibir"] == "1") else False
+        try:
+            loans = Article_Loan.objects.filter(id__in=request.POST["selected"])
+            if accept:
+                for loan in loans:
+                    loan.state = 'R'
+                    loan.save()
+            else:
+                for loan in loans:
+                    loan.state = 'P'
+                    loan.save()
+
+            return redirect('/admin/actions-panel')
+
+        except:
+            messages.warning(request, 'No se seleccionaron Prestamos')
+            return redirect('/admin/actions-panel')
