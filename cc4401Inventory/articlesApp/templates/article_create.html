@@ -3,7 +3,6 @@
 
 {% load static %}
 
-
 {% block title %}
   Crear artículo
 {% endblock %}
@@ -14,7 +13,10 @@
 <h2>Crear nuevo artículo</h2>
 <form class="site-form" action="{% url 'create' %}" method="post">
     {% csrf_token %}
-    {{ form }}
+    {% load bootstrap %}
+
+    {{ form|bootstrap }}
+
     <input type="submit" value="Crear">
 </form>
 
