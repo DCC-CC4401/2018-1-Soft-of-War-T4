@@ -54,11 +54,11 @@
       <div class="col-md-6 admin-table-container">
         <h1>Préstamos</h1>
       <div class="row">
-          <form action="" method="get">
+          <form action="" method="POST"> {% csrf_token %}
               <input type="hidden" name="date" value="{{ current_date }}">
           <div class="btn-group" role="group" aria-label="Basic example" style="margin: 10px auto;">
             <button name = "filter" value="todos" type="submit" class="btn btn-secondary">Todos</button>
-              <button name = "filter" value="vigentes" type="submit" class="btn btn-secondary">Vigentes</button>
+            <button name = "filter" value="vigentes" type="submit" class="btn btn-secondary">Vigentes</button>
             <button name = "filter" value="caducados" type="submit" class="btn btn-secondary">Caducados</button>
             <button name = "filter" value ="perdidos" type="submit" class="btn btn-secondary">Perdidos</button>
             </div>
