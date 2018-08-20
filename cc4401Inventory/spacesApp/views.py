@@ -1,22 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from cc4401Inventory.spacesApp.models import Space
-from cc4401Inventory.reservationsApp.models import Space_Reservation
-from django.db import models
+from reservationsApp.models import Space_Reservation
 from datetime import datetime, timedelta
 from django.contrib import messages
-
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
 from spacesApp.models import Space
-from reservationsApp.models import Reservation
-from django.db import models
-#from datetime import datetime, localtime
 from django.utils.timezone import localtime
 import datetime
-import random, os
-import pytz
-from django.contrib import messages
+import os
 
 
 
@@ -36,7 +26,7 @@ def space_data(request, space_id, date=None):
                 current_week = datetime.date.today().isocalendar()[1]
                 current_date = datetime.date.today().strftime("%Y-%m-%d")
 
-        reservations = Reservation.objects.filter(starting_date_time__week=current_week, state__in=['P', 'A'], id=space_id)
+        reservations = Space_Reservation.objects.filter(starting_date_time__week=current_week, state__in=['P', 'A'], id=space_id)
         colores = {'A': 'rgba(0,153,0,0.7)', 'P': 'rgba(51,51,204,0.7)'}
 
         res_list = []
