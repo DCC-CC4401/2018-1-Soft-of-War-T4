@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Space_Reservation
+from .models import Article_Reservation
 from django.contrib import messages
 
 
@@ -8,7 +9,7 @@ def delete(request):
         reservation_ids = request.POST.getlist('reservation')
         try:
             for reservation_id in reservation_ids:
-                reservation = Space_Reservation.objects.get(id=reservation_id)
+                reservation = Article_Reservation.objects.get(id=reservation_id)
                 if reservation.state == 'P':
                     reservation.delete()
         except:

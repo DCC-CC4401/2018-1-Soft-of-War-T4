@@ -5,8 +5,10 @@ from mainApp.models import User
 from django.contrib import messages
 
 from reservationsApp.models import Space_Reservation
+from reservationsApp.models import Article_Reservation
 
 from loansApp.models import Article_Loan
+import re
 
 
 def login_view(request):
@@ -66,6 +68,9 @@ def signup_submit(request):
             return redirect('/user/signup/')
         elif User.objects.filter(rut = rut).exists():
             messages.warning(request, 'Ya existe una cuenta con ese rut')
+            return redirect('/user/signup/')    
+        elif not re.match(r"\b[0-9|.]{1,10}\-[K|k|0-9]", rut):
+            messages.warning(request, 'El formato de rut no es válido,ingréselo con puntos y guión')
             return redirect('/user/signup/')
         else:
             user = User.objects.create_user(first_name=first_name, email=email, password=password, rut = rut)
@@ -84,7 +89,7 @@ def logout_view(request):
 def user_data(request, user_id):
     try:
         user = User.objects.get(id=user_id)
-        reservations = Space_Reservation.objects.filter(user = user_id).order_by('-starting_date_time')[:10]
+        reservations = Article_Reservation.objects.filter(user = user_id).order_by('-starting_date_time')[:10]
         loans = Article_Loan.objects.filter(user = user_id).order_by('-starting_date_time')[:10]
         context = {
             'user': user,
