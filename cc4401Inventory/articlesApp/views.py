@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from articlesApp.models import Article
 from loansApp.models import Loan
@@ -10,6 +10,7 @@ import json
 import random, os
 import pytz
 from django.contrib import messages
+from django.views.generic.base import View
 
 
 
@@ -148,3 +149,11 @@ def article_create(request):
     else:
         form = forms.CreateArticle()
     return render(request, 'article_create.html', {'form': form})
+
+
+def article_delete(request):
+        try:
+            Article.objects.filter(id=request.POST['article_id']).delete()
+        except ValueError:
+            print(ValueError)
+        return HttpResponseRedirect('/admin/items-panel/')
