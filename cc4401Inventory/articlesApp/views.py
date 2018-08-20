@@ -4,7 +4,9 @@ from articlesApp.models import Article
 from loansApp.models import Loan
 from django.db import models
 from datetime import datetime, timedelta
-
+from django.http import HttpResponseRedirect
+from .import forms
+import json
 import random, os
 import pytz
 from django.contrib import messages
@@ -134,3 +136,15 @@ def article_edit_description(request, article_id):
         a.save()
 
     return redirect('/article/' + str(article_id) + '/edit')
+
+
+@login_required
+def article_create(request):
+    if request.method == 'POST':
+        form = forms.CreateArticle(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/admin/items-panel/')
+    else:
+        form = forms.CreateArticle()
+    return render(request, 'article_create.html', {'form': form})
