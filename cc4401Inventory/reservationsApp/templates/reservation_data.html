@@ -3,7 +3,9 @@
 
 {% load static %}
 
-
+{% block title %}
+  Ficha de reserva: {{ reservation.id }}
+{% endblock %}
 
 {% block body %}
 
@@ -122,6 +124,4 @@
 
     </div>
 
-  </div>
-</div>
 {% endblock %}

@@ -98,16 +98,18 @@ def user_data(request, user_id):
 
 @login_required
 def loan_data(request, loan_id):
-    #try:
+    try:
         loan = Article_Loan.objects.get(id=loan_id)
+        article = loan.article
         context = {
             'loan': loan,
+            'article': article
         }
 
         return render(request, 'usersApp/loans-data.html', context)
-    #except Exception as e:
-        #print(e)
-        #return redirect('/')
+    except Exception as e:
+        print(e)
+        return redirect('/')
 
 
 @login_required
@@ -116,5 +118,6 @@ def lost_request(request, loan_id):
         loan = Article_Loan.objects.get(id=loan_id)
         loan.state = 'P'
         loan.save()
-    return redirect('user_data', user_id=request.user.id)
+    messages.success(request, '"Se ha marcado como perdido el articulo"')
+    return redirect('loan_data', loan_id=loan_id)
 

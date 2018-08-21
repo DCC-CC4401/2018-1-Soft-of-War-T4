@@ -10,13 +10,46 @@
 
 {% block body %}
 
-  <div class="row">
-    <div class="col-md-4 offset-1">
+  <div class = "col-md-5 offset-2">
+      <h3 class="block-title">Detalle del prestamo n° {{ loan.id }} </h3>
 
-      <div class="row">
-        <h1 class="loan-name">
-          {{ loan.name }}
-        {% if loan.state == "V" %}
+  <form action="{% url  'lost_request' loan.id %}" method="post" class="lost-form">
+        {% csrf_token %}
+
+         <div class = "row">
+          <div class="col-md-4">
+            <label>Nombre usuario: </label>
+          </div>
+          <div class="col-md-8">
+           <h6>   {{ user.get_full_name}} </h6>
+          </div>
+        </div>
+
+        <div class = "row">
+          <div class="col-md-4">
+            <label>Fecha inicio: </label>
+          </div>
+          <div class="col-md-8">
+           <h6>   {{ loan.starting_date_time }} </h6>
+          </div>
+        </div>
+
+        <div class = "row">
+          <div class="col-md-4">
+            <label>Fecha Termino: </label>
+          </div>
+          <div class="col-md-8">
+           <h6>   {{ loan.ending_date_time }} </h6>
+          </div>
+        </div>
+
+        <div class = "row">
+          <div class="col-md-4">
+            <label>Estado: </label>
+          </div>
+          <div class="col-md-8">
+
+           {% if loan.state == "V" %}
             <span class="badge badge-pill badge-success"><i class="fas fa-chevron-left"></i> {{  loan.get_state_display }}</span>
           {% elif loan.state == "C" %}
             <span class="badge badge-pill badge-danger"><i class="fas fa-chevron-left"></i> {{  loan.get_state_display }}</span>
@@ -25,32 +58,67 @@
             {% elif loan.state == "R" %}
             <span class="badge badge-pill badge-success"><i class="fas fa-chevron-left"></i> {{  loan.get_state_display }}</span>
           {% endif %}
-         </h1>
-      </div>
 
-
-      <div class="card">
-        <div class="card-header article-description-title">Usuario del Prestamo:</div>
-        <div class="card-body">
-          <p class="card-text">{{ loan.user }}</p>
+          </div>
         </div>
-      </div>
-    </div>
 
-    {% if loan.state == "V" or loan.state == "C" %}
+
+
+      {% if loan.state == "V" or loan.state == "C" %}
     <div class = "col-md-5 offset-2">
-      <h3 class="block-title"> ¿Perdiste el articulo? </h3>
-      <form action="{% url  'lost_request' loan.id %}" method="post" class="lost-form">
-        {% csrf_token%}
-        <input type="hidden" name="loan_id" value="{{ loan.id }}">
         <div class = "row">
           <button type="submit" class = "btn btn-primary float-right"> Marcar como Perdido </button>
         </div>
-      </form>
     </div>
-  {% endif %}
+    {% endif %}
+
+  </form>
+
+  <h3 class="block-title"> Detalles del artículo</h3>
+
+  <form   class="reservation-form">
+       <div class="row">
+         <h3>{{ article.name }}</h3>
+         <h5>
+        {% if article.state == "D" %}
+            <span class="badge badge-pill badge-success"><i class="fas fa-chevron-left"></i> {{  article.get_state_display }}</span>
+          {% elif article.state == "P" %}
+            <span class="badge badge-pill badge-primary"><i class="fas fa-chevron-left"></i> {{  article.get_state_display }}</span>
+          {% elif article.state == "L" %}
+            <span class="badge badge-pill badge-danger"><i class="fas fa-chevron-left"></i> {{  article.get_state_display }}</span>
+          {% elif article.state == "R" %}
+            <span class="badge badge-pill badge-warning"><i class="fas fa-chevron-left"></i> {{  article.get_state_display }}</span>
+          {% endif %}
+         </h5>
+       </div>
 
 
+        <div class = "row">
+          {% if article.image %}
+            <img src= " {% static article.image.url %}" class="img-fluid" alt="Foto" style="height: 400px" />
+        {% else %}
+            <img class="card-img-top" src="{% static 'img/items/default_article.jpg' %}" alt="Card image cap">
+        {% endif %}
+          </div>
+
+
+        <div class = "row">
+           <div class="col-md-4">
+            <label>Descripción: </label>
+          </div>
+          <div class="col-md-8">
+          {{ article.description }}
+          </div>
+
+
+        </div>
+
+
+
+
+
+
+      </form>
 
   </div>
 </div>
