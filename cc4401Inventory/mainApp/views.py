@@ -21,15 +21,18 @@ def landing_spaces(request, date=None):
     if date:
         current_date = date
         current_week = datetime.datetime.strptime(current_date,"%Y-%m-%d").date().isocalendar()[1]
+        current_year = datetime.datetime.strptime(current_date,"%Y-%m-%d").date().isocalendar()[0]
     else:
         try:
             current_week = datetime.datetime.strptime(request.GET["date"], "%Y-%m-%d").date().isocalendar()[1]
+            current_year = datetime.datetime.strptime(request.GET["date"], "%Y-%m-%d").date().isocalendar()[0]
             current_date = request.GET["date"]
         except:
             current_week = datetime.date.today().isocalendar()[1]
+            current_year = datetime.date.today().isocalendar()[0]
             current_date = datetime.date.today().strftime("%Y-%m-%d")
 
-    reservations = Space_Reservation.objects.filter(starting_date_time__week = current_week, state__in = ['P','A'])
+    reservations = Space_Reservation.objects.filter(starting_date_time__week = current_week,starting_date_time__year = current_year, state__in = ['P','A'])
     colores = {'A': 'rgba(0,153,0,0.7)',
                'P': 'rgba(51,51,204,0.7)'}
 
