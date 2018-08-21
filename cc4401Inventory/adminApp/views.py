@@ -59,11 +59,11 @@ def actions_panel(request):
     try:
         if request.method == "POST":
             if request.POST["filter"]=='vigentes':
-                loans = Article_Loan.objects.filter(ending_date_time__gt=actual_date, state='V').order_by('starting_date_time')
+                loans = Article_Loan.objects.filter(state='V').order_by('starting_date_time')
             elif request.POST["filter"]=='caducados':
-                loans = Article_Loan.objects.filter(ending_date_time__gt=actual_date, state='C').order_by('starting_date_time')
+                loans = Article_Loan.objects.filter(state='C').order_by('starting_date_time')
             elif request.POST["filter"]=='perdidos':
-                loans = Article_Loan.objects.filter(ending_date_time__gt=actual_date, state='P').order_by('starting_date_time')
+                loans = Article_Loan.objects.filter(state='P').order_by('starting_date_time')
             else:
                 loans = Article_Loan.objects.all().order_by('starting_date_time')
     except:
