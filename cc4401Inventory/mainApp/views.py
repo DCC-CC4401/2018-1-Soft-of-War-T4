@@ -116,7 +116,9 @@ def landing_spaces(request, date=None):
                'current_date' : current_date,
                'controls' : move_controls,
                'actual_monday' : monday,
-               'spaces' : all_spaces}
+               'spaces' : all_spaces,
+               'enable_filters': True
+               }
     return render(request, 'espacios.html', context)
 
 
